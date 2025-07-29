@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetBites Bakery - Design Your Custom Cake</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffcce6;     /* Light Pink */
+            --secondary-pink: #ff99cc;   /* Medium Pink */
+            --dark-pink: #ff66b3;        /* Darker Pink for accents */
+            --cream: #fff5e6;            /* Soft Cream/Beige */
+            --chocolate: #663300;        /* Deep Brown for text/footer */
+            --light-bg: #fdfaf7;         /* Very light background */
+            --text-color: #333;          /* Main text color */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-color: var(--light-bg);
+        }
+
+        .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            transition: all 0.3s ease;
+            padding: 15px 0;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12); /* Slightly more prominent when scrolled */
+        }
+
+        .navbar-brand {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem; /* Slightly larger */
+            color: var(--dark-pink) !important;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            margin: 0 10px; /* More spacing */
+            color: #555 !important;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background-color: var(--dark-pink);
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        .nav-link:hover {
+            color: var(--dark-pink) !important;
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .nav-icon {
+            font-size: 1.3rem; /* Slightly larger */
+            margin-left: 20px; /* More spacing */
+            color: #555;
+            transition: all 0.3s;
+        }
+
+        .nav-icon:hover {
+            color: var(--dark-pink);
+            transform: translateY(-2px); /* Gentle lift on hover */
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--dark-pink);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem; /* Slightly larger text */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); /* New Unsplash image */
+            background-size: cover;
+            background-position: center;
+            height: 55vh; /* A bit taller */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-top: 80px; /* Adjust for fixed navbar height */
+            box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.1); /* Soft shadow at bottom */
+        }
+
+        .hero h1 {
+            font-size: 4rem; /* Larger heading */
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero p {
+            font-size: 1.2rem; /* Slightly larger subtext */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem; /* Larger title */
+            color: var(--chocolate); /* Darker for better contrast */
+            margin-bottom: 50px; /* More space below title */
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60%; /* Longer line */
+            height: 4px; /* Thicker line */
+            background-color: var(--dark-pink); /* Accent color */
+            bottom: -15px; /* More space from text */
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        /* Custom Order Form Section */
+        .order-form-section {
+            padding: 100px 0; /* More vertical padding */
+            background-color: var(--light-bg);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--chocolate); /* Darker color for labels */
+            display: flex;
+            align-items: center;
+            gap: 10px; /* More space between icon and text */
+        }
+.form-check {
+    margin-bottom: 1.125rem; /* This will add 18px of space below each checkbox */
+}
+
+        .form-control,
+        .form-select,
+        .form-check-input {
+            border-radius: 12px; /* More rounded */
+            padding: 14px 22px; /* Larger padding for inputs */
+            border: 1px solid var(--secondary-pink); /* Soft pink border */
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus,
+        .form-check-input:focus {
+            border-color: var(--dark-pink);
+            box-shadow: 0 0 0 0.3rem rgba(255, 102, 179, 0.3); /* More pronounced, soft shadow */
+        }
+
+        textarea.form-control {
+            min-height: 140px; /* Taller textarea */
+            resize: vertical;
+        }
+
+        .form-check-input {
+            width: 1.35em; /* Slightly larger checkboxes */
+            height: 1.35em;
+            margin-right: 10px;
+            border: 2px solid var(--secondary-pink); /* Thicker border */
+            background-color: var(--cream);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--dark-pink);
+            border-color: var(--dark-pink);
+        }
+        
+        .form-check-label {
+            font-weight: 400; /* Regular weight for checkbox labels */
+            color: var(--text-color);
+        }
+
+        .btn-primary {
+            background-color: var(--dark-pink);
+            border: none;
+            padding: 14px 40px; /* Larger button */
+            font-weight: 700; /* Bolder text */
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+            box-shadow: 0 5px 15px rgba(255, 102, 179, 0.3); /* Pink shadow */
+        }
+
+        .btn-primary:hover {
+            background-color: #e64d99; /* Slightly darker pink on hover */
+            transform: translateY(-5px); /* More pronounced lift */
+            box-shadow: 0 12px 25px rgba(255, 102, 179, 0.4); /* Larger shadow on hover */
+        }
+
+        .form-group-card {
+            background-color: white; /* White background for form cards */
+            border-radius: 20px; /* More rounded */
+            padding: 35px; /* More padding */
+            margin-bottom: 30px; /* More space between cards */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Soft, elegant shadow */
+        }
+
+        .form-group-card h5 {
+            color: var(--dark-pink); /* Pink heading for card titles */
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary-pink); /* Underline effect */
+            padding-bottom: 10px;
+            display: inline-block; /* To make border-bottom fit content */
+        }
+
+        .form-text {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Image upload preview */
+        .image-preview {
+            max-width: 100%;
+            max-height: 250px; /* Limit height */
+            object-fit: contain; /* Ensure image fits */
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid var(--primary-pink);
+        }
+
+        /* Tips Section */
+        .tips-section {
+            padding: 100px 0; /* More vertical padding */
+            background-color: var(--cream); /* Cream background */
+            color: var(--chocolate);
+        }
+
+        .tips-section h2 {
+            color: var(--chocolate); /* Darker color for contrast */
+        }
+
+        .tips-card {
+            background: white;
+            border-radius: 20px; /* More rounded */
+            padding: 35px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Consistent shadow */
+            height: 100%;
+            transition: all 0.3s ease;
+            text-align: left; /* Ensure text alignment */
+        }
+
+        .tips-card:hover {
+            transform: translateY(-8px); /* More pronounced lift */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .tips-card h5 {
+            font-weight: 700;
+            color: var(--dark-pink);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .tips-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .tips-card ul li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 1rem;
+        }
+
+        .tips-card ul li i {
+            color: var(--dark-pink);
+            margin-right: 12px;
+            margin-top: 4px;
+            font-size: 1.1rem;
+        }
+
+        .tips-link {
+            color: var(--dark-pink);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .tips-link:hover {
+            color: var(--chocolate);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--chocolate);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .footer h4 {
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+            color: var(--primary-pink); /* Highlight footer headings */
+        }
+
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background-color: var(--secondary-pink);
+            bottom: -10px;
+            left: 0;
+            border-radius: 3px;
+        }
+        
+        /* Adjust footer h4::after for responsiveness */
+        .footer .col-lg-4.col-md-6:nth-child(1) h4::after,
+        .footer .col-lg-2.col-md-6 h4::after,
+        .footer .col-lg-4.col-md-6:nth-child(4) h4::after {
+            left: 0; /* Align with text for Lg screens */
+        }
+        @media (max-width: 768px) {
+            .footer h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            opacity: 0.8;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary-pink);
+            padding-left: 8px; /* More prominent hover effect */
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px; /* Slightly larger icons */
+            height: 45px;
+            background-color: rgba(255, 255, 255, 0.15); /* More visible background */
+            border-radius: 50%;
+            margin-right: 12px;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+        }
+
+        .social-icon:hover {
+            background-color: var(--dark-pink);
+            transform: translateY(-5px) scale(1.05); /* Gentle lift and slight scale */
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            .navbar-collapse {
+                text-align: center;
+            }
+            .navbar-nav {
+                align-items: center;
+            }
+            .nav-icon {
+                margin: 0 10px;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: 45vh;
+                margin-top: 70px; /* Adjust for fixed navbar height */
+            }
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .form-group-card {
+                padding: 25px;
+            }
+            .footer {
+                text-align: center;
+            }
+            .footer-links {
+                text-align: center;
+                list-style: none;
+                padding: 0;
+            }
+            .footer-links li {
+                text-align: center;
+            }
+            .footer-links a {
+                display: inline-block; /* Center links */
+            }
+            .social-icons {
+                justify-content: center;
+                display: flex;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .navbar-brand {
+                font-size: 1.8rem;
+            }
+            .form-control, .form-select, .btn-primary {
+                padding: 12px 18px;
+            }
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 40px;
+            }
+            .form-group-card {
+                padding: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+            opacity: 0; /* Hidden by default for animation */
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Toast styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .toast {
+            background-color: var(--dark-pink); /* Use brand color for toast */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <button class="navbar-toggler me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand cursive mx-auto mx-lg-0" href="index.html">SweetBites</a> <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="custom-order.html">Custom Order</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    <a href="#" class="nav-icon" aria-label="Search"><i class="bi bi-search"></i></a>
+                    <a href="#" class="nav-icon" aria-label="Wishlist"><i class="bi bi-heart"></i></a>
+                    <a href="#" class="nav-icon" aria-label="Profile"><i class="bi bi-person"></i></a>
+                    <a href="#" class="nav-icon position-relative" aria-label="Cart">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero d-flex align-items-center justify-content-center">
+        <div class="container text-center fade-in">
+            <h1 class="cursive">Design Your Dream Cake</h1>
+            <p>Unleash your creativity and we'll bake it into reality 🍰</p>
+        </div>
+    </section>
+
+    <section class="order-form-section">
+        <div class="container">
+            <h2 class="text-center section-title fade-in">Custom Cake Order Form</h2>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10 fade-in delay-1">
+                    <form id="customCakeForm" class="p-4 p-md-5 rounded-3 shadow-lg" novalidate>
+                        <div class="form-group-card mb-4">
+                            <h5>Your Contact Details</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullName" class="form-label"><i class="bi bi-person-fill"></i> Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" placeholder="Your Full Name" required aria-label="Full Name">
+                                    <div class="invalid-feedback">Please enter your full name.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label"><i class="bi bi-envelope-fill"></i> Email Address</label>
+                                    <input type="email" class="form-control" id="email" placeholder="name@example.com" required aria-label="Email Address">
+                                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label"><i class="bi bi-telephone-fill"></i> Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" placeholder="+91 12345 67890" required aria-label="Phone Number">
+                                    <div class="invalid-feedback">Please enter your phone number.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="deliveryDate" class="form-label"><i class="bi bi-calendar-date-fill"></i> Desired Delivery Date & Time</label>
+                                    <input type="datetime-local" class="form-control" id="deliveryDate" required aria-label="Delivery Date and Time">
+                                    <div class="invalid-feedback">Please select a delivery date and time.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-card mb-4">
+                            <h5>Cake Details</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="cakeShape" class="form-label"><i class="bi bi-gem"></i> Cake Shape</label>
+                                    <select class="form-select" id="cakeShape" required aria-label="Cake Shape">
+                                        <option value="">Choose...</option>
+                                        <option value="round">Round</option>
+                                        <option value="square">Square</option>
+                                        <option value="heart">Heart</option>
+                                        <option value="tiered">Tiered</option>
+                                        <option value="custom">Custom (Specify in Theme)</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a cake shape.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="cakeSize" class="form-label"><i class="bi bi-rulers"></i> Cake Size</label>
+                                    <select class="form-select" id="cakeSize" required aria-label="Cake Size">
+                                        <option value="">Choose...</option>
+                                        <option value="0.5kg">0.5 kg (Approx. 4-6 servings)</option>
+                                        <option value="1kg">1 kg (Approx. 8-10 servings)</option>
+                                        <option value="1.5kg">1.5 kg (Approx. 12-15 servings)</option>
+                                        <option value="2kg">2 kg (Approx. 18-20 servings)</option>
+                                        <option value="3kg">3 kg (Approx. 25-30 servings)</option>
+                                        <option value="5kg">5 kg (Approx. 45-50 servings)</option>
+                                        <option value="larger">Larger (Specify in Message)</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a cake size.</div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-cup-hot-fill"></i> Flavors (Select all that apply)</label>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="chocolate" id="flavorChocolate">
+                                            <label class="form-check-label" for="flavorChocolate">Chocolate</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="vanilla" id="flavorVanilla">
+                                            <label class="form-check-label" for="flavorVanilla">Vanilla</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="redvelvet" id="flavorRedVelvet">
+                                            <label class="form-check-label" for="flavorRedVelvet">Red Velvet</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="butterscotch" id="flavorButterscotch">
+                                            <label class="form-check-label" for="flavorButterscotch">Butterscotch</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="pineapple" id="flavorPineapple">
+                                            <label class="form-check-label" for="flavorPineapple">Pineapple</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="strawberry" id="flavorStrawberry">
+                                            <label class="form-check-label" for="flavorStrawberry">Strawberry</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="lemon" id="flavorLemon">
+                                            <label class="form-check-label" for="flavorLemon">Lemon</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="coffee" id="flavorCoffee">
+                                            <label class="form-check-label" for="flavorCoffee">Coffee</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="mango" id="flavorMango">
+                                            <label class="form-check-label" for="flavorMango">Mango</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-card mb-4">
+                            <h5>Design & Message</h5>
+                            <div class="mb-3">
+                                <label for="cakeTheme" class="form-label"><i class="bi bi-palette-fill"></i> Theme / Design Ideas</label>
+                                <input type="text" class="form-control" id="cakeTheme" placeholder="e.g., Superhero, Floral, Unicorn, Wedding Classic" aria-label="Cake Theme or Design">
+                                <small class="form-text text-muted">Describe your dream cake! Be as specific as possible about colors, elements, etc.</small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="designImage" class="form-label"><i class="bi bi-image-fill"></i> Upload Reference Image (Optional)</label>
+                                <input class="form-control" type="file" id="designImage" accept="image/*" aria-label="Upload Design Reference Image">
+                                <small class="form-text text-muted">Upload an image to help us visualize your design.</small>
+                                <img id="imagePreview" class="image-preview" src="#" alt="Design preview">
+                            </div>
+                            <div class="mb-3">
+                                <label for="customMessage" class="form-label"><i class="bi bi-chat-dots-fill"></i> Custom Message on Cake (Optional)</label>
+                                <input type="text" class="form-control" id="customMessage" placeholder="e.g., Happy Birthday John!, Congratulations!" maxlength="30" aria-label="Custom Message on Cake">
+                                <small class="form-text text-muted">Max 30 characters for the message on the cake.</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group-card mb-4">
+                            <h5>Delivery Information</h5>
+                            <div class="mb-3">
+                                <label for="deliveryAddress" class="form-label"><i class="bi bi-house-door-fill"></i> Delivery Address</label>
+                                <textarea class="form-control" id="deliveryAddress" rows="3" placeholder="Flat No./House No., Street, Locality, City, Pincode" required aria-label="Delivery Address"></textarea>
+                                <div class="invalid-feedback">Please enter the delivery address.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="additionalNotes" class="form-label"><i class="bi bi-card-text"></i> Additional Notes (Optional)</label>
+                                <textarea class="form-control" id="additionalNotes" rows="3" placeholder="Any specific instructions for delivery or cake preparation? Allergies?"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg">Place Custom Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tips-section">
+        <div class="container">
+            <h2 class="text-center section-title mb-5 fade-in">Need Help Picking a Cake?</h2>
+            <div class="row justify-content-center g-4">
+                <div class="col-md-6 col-lg-4 fade-in delay-1">
+                    <div class="tips-card">
+                        <h5><i class="bi bi-info-circle-fill"></i> Popular Combinations</h5>
+                        <ul>
+                            <li><i class="bi bi-check-circle-fill"></i> Rich Chocolate with salted caramel</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Classic Red Velvet with tangy cream cheese</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Vanilla Bean with fresh berries & cream</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Zesty Lemon with raspberry filling</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Indulgent Coffee with mocha buttercream</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 fade-in delay-2">
+                    <div class="tips-card">
+                        <h5><i class="bi bi-lightbulb-fill"></i> Consider Your Occasion</h5>
+                        <ul>
+                            <li><i class="bi bi-balloon-fill"></i> Birthday: Fun, whimsical, character themes.</li>
+                            <li><i class="bi bi-heart-fill"></i> Wedding: Elegant, sophisticated, floral cascades.</li>
+                            <li><i class="bi bi-mortarboard-fill"></i> Graduation: Personalized with names/school colors.</li>
+                            <li><i class="bi bi-gift-fill"></i> Anniversary: Romantic designs, unique flavor pairings.</li>
+                            <li><i class="bi bi-star-fill"></i> Baby Shower: Pastel colors, cute animal motifs.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 fade-in delay-3">
+                    <div class="tips-card">
+                        <h5><i class="bi bi-image-fill"></i> Explore Our Gallery!</h5>
+                        <p>Discover inspiration from our past custom creations. See what's possible!</p>
+                        <a href="#" class="tips-link">View Gallery <i class="bi bi-arrow-right"></i></a>
+                        <p class="mt-3 mb-0">Don't forget to check our <a href="#" class="tips-link">Ready-to-Order Cakes</a> for quick delights!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 fade-in">
+                    <h3 class="footer-logo cursive">SweetBites</h3>
+                    <p>We craft exquisite cakes and desserts, turning your sweetest dreams into delicious realities. Made with passion, served with love.</p>
+                    <div class="social-icons d-flex">
+                        <a href="https://www.facebook.com" target="_blank" class="social-icon" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com" target="_blank" class="social-icon" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/1234567890" target="_blank" class="social-icon" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://www.twitter.com" target="_blank" class="social-icon" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="https://www.pinterest.com" target="_blank" class="social-icon" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0 fade-in delay-1">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Cakes</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0 fade-in delay-2">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Birthday Cakes</a></li>
+                        <li><a href="#">Wedding Cakes</a></li>
+                        <li><a href="#">Cupcakes</a></li>
+                        <li><a href="#">Eggless Cakes</a></li>
+                        <li><a href="#">Seasonal Specials</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-6 fade-in delay-3">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li><i class="bi bi-geo-alt me-2"></i> 123 Sweet Street, Dessert City, PIN 110001</li>
+                        <li><i class="bi bi-telephone me-2"></i> +91 12345 67890</li>
+                        <li><i class="bi bi-envelope me-2"></i> hello@sweetbites.com</li>
+                        <li><i class="bi bi-clock me-2"></i> Mon-Sat: 9AM - 7PM, Sun: 10AM - 5PM</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center copyright fade-in">
+                <p>© <span id="currentYear"></span> SweetBites Bakery. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast-container">
+        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Your custom cake order has been placed successfully! We'll contact you soon.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Sticky navbar on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                }
+            });
+        }
+
+        // Run on load and scroll
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Dynamic copyright year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Image preview logic
+        document.getElementById('designImage').addEventListener('change', function(event) {
+            const [file] = event.target.files;
+            if (file) {
+                const preview = document.getElementById('imagePreview');
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block'; // Show the image preview
+            } else {
+                document.getElementById('imagePreview').style.display = 'none'; // Hide if no file selected
+                document.getElementById('imagePreview').src = '#'; // Clear image source
+            }
+        });
+
+        // Handle form submission (mock JS for toast)
+        document.getElementById('customCakeForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission
+
+            // Check if form is valid using Bootstrap's built-in validation
+            if (this.checkValidity()) {
+                const toastLiveExample = document.getElementById('successToast');
+                const toast = new bootstrap.Toast(toastLiveExample);
+                toast.show();
+
+                // Clear the form fields after successful submission
+                this.reset();
+                this.classList.remove('was-validated'); // Remove validation styles after reset
+                document.getElementById('imagePreview').style.display = 'none'; // Hide image preview
+                document.getElementById('imagePreview').src = '#'; // Clear image source
+            } else {
+                // If validation fails, add Bootstrap's 'was-validated' class to show feedback
+                this.classList.add('was-validated');
+            }
+        });
+    </script>
+</body>
+</html>

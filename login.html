@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetBites Bakery - Login / Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffcce6;     /* Light Pink */
+            --secondary-pink: #ff99cc;   /* Medium Pink */
+            --dark-pink: #ff66b3;        /* Darker Pink for accents */
+            --cream: #fff5e6;            /* Soft Cream/Beige */
+            --chocolate: #663300;        /* Deep Brown for text/footer */
+            --light-bg: #fdfaf7;         /* Very light background */
+            --text-color: #333;          /* Main text color */
+            --border-color: rgba(255, 153, 204, 0.5); /* Semi-transparent secondary pink */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--light-bg) 0%, var(--primary-pink) 100%); /* Soft pastel gradient */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0; /* Add padding for smaller screens */
+        }
+
+        .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Navbar for branding */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: var(--dark-pink) !important;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            margin: 0 8px;
+            color: #555 !important;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--dark-pink) !important;
+        }
+
+        /* Form Container */
+        .auth-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+            overflow: hidden;
+            max-width: 900px; /* Max width for the container */
+            width: 95%; /* Responsive width */
+            margin-top: 180px; /* Space from fixed navbar */
+            display: flex;
+            flex-direction: row; /* Default for desktop */
+            animation: fadeInScale 0.8s ease-out forwards;
+        }
+
+        .auth-image-side {
+            flex: 1;
+            background: url('https://images.unsplash.com/photo-1587399872580-c0b9d9c2a688?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80') center center / cover no-repeat;
+            display: none; /* Hidden by default, shown on larger screens */
+            position: relative;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .auth-image-side h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+
+        .auth-image-side p {
+            font-size: 1.1rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .auth-form-side {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Tabs/Toggle */
+        .nav-pills .nav-link {
+            border-radius: 15px;
+            padding: 12px 25px;
+            font-weight: 600;
+            color: var(--secondary-pink);
+            background-color: var(--cream);
+            margin: 0 5px; /* Space between tabs */
+            transition: all 0.3s ease;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: var(--dark-pink);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 102, 179, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-pills {
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        /* Form Styling */
+        .form-label {
+            font-weight: 600;
+            color: var(--chocolate);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 14px 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--dark-pink);
+            box-shadow: 0 0 0 0.25rem rgba(255, 102, 179, 0.25);
+        }
+
+        .input-group .form-control {
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .input-group-text {
+            background-color: var(--cream);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            padding: 14px 15px;
+            color: var(--dark-pink);
+            font-size: 1.1rem;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: var(--dark-pink);
+            box-shadow: 0 0 0 0.25rem rgba(255, 102, 179, 0.25);
+            z-index: 1; /* Keep border on focus */
+        }
+        
+        .password-toggle {
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #777;
+            transition: color 0.2s;
+        }
+
+        .password-toggle:hover {
+            color: var(--dark-pink);
+        }
+
+        .btn-primary {
+            background-color: var(--dark-pink);
+            border: none;
+            padding: 14px 30px;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 5px 15px rgba(255, 102, 179, 0.3);
+            width: 100%; /* Full width button */
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #e64d99;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 102, 179, 0.4);
+        }
+
+        .form-check-input {
+            width: 1.25em;
+            height: 1.25em;
+            margin-top: 0.3em;
+            border: 1px solid var(--secondary-pink);
+            border-radius: 0.25em;
+            background-color: var(--cream);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--dark-pink);
+            border-color: var(--dark-pink);
+        }
+
+        .form-check-label {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .link-secondary {
+            color: var(--secondary-pink) !important;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .link-secondary:hover {
+            color: var(--dark-pink) !important;
+            text-decoration: underline;
+        }
+
+        .form-text-link {
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        /* Toast styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .toast {
+            background-color: var(--dark-pink);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Mobile Optimization */
+        @media (min-width: 768px) {
+            .auth-image-side {
+                display: flex; /* Show image side on medium and larger screens */
+            }
+            .auth-container {
+                margin-top: 80px; /* No need for margin if body is centered */
+            }
+        }
+
+        @media (max-width: 767px) {
+            .auth-container {
+                flex-direction: column; /* Stack vertically on small screens */
+                width: 95%;
+                margin-top: 80px;
+            }
+            .auth-form-side {
+                padding: 30px 20px; /* Less padding on small screens */
+            }
+            .nav-pills .nav-link {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            .nav-pills {
+                margin-bottom: 20px;
+            }
+            .form-control, .btn-primary {
+                padding: 12px 15px; /* Smaller padding for inputs/buttons on mobile */
+                font-size: 0.95rem;
+            }
+            .input-group-text {
+                padding: 12px 12px;
+                font-size: 1rem;
+            }
+            .auth-image-side {
+                display: none; /* Ensure it's hidden on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light">
+        <div class="container">
+            <a class="navbar-brand cursive" href="index.html">SweetBites</a>
+            <a class="nav-link" href="index.html"><i class="bi bi-arrow-left-circle-fill"></i> Back to Home</a>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-image-side">
+            <h2 class="cursive">SweetBites Bakery</h2>
+            <p>Your journey to delicious custom cakes starts here.</p>
+            <i class="bi bi-heart-fill" style="font-size: 3rem; color: var(--primary-pink); margin-top: 20px;"></i>
+        </div>
+
+        <div class="auth-form-side">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-login-tab" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab" aria-controls="pills-login" aria-selected="true">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-register-tab" data-bs-toggle="pill" data-bs-target="#pills-register" type="button" role="tab" aria-controls="pills-register" aria-selected="false">
+                        <i class="bi bi-person-plus-fill me-2"></i>Register
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
+                    <h4 class="text-center mb-4" style="color: var(--dark-pink); font-weight: 700;">Welcome Back!</h4>
+                    <form id="loginForm" novalidate>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                                <input type="email" class="form-control" id="loginEmail" placeholder="your@example.com" required aria-label="Login Email">
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Password" required aria-label="Login Password">
+                                <span class="input-group-text password-toggle" data-target="loginPassword"><i class="bi bi-eye-slash-fill"></i></span>
+                                <div class="invalid-feedback">Please enter your password.</div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" class="link-secondary">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                    </form>
+                    <p class="form-text-link">Don't have an account? <a href="#" class="link-secondary" data-bs-toggle="pill" data-bs-target="#pills-register" id="switch-to-register">Register here</a></p>
+                </div>
+
+                <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
+                    <h4 class="text-center mb-4" style="color: var(--dark-pink); font-weight: 700;">Join SweetBites!</h4>
+                    <form id="registerForm" novalidate>
+                        <div class="mb-3">
+                            <label for="registerName" class="form-label">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                <input type="text" class="form-control" id="registerName" placeholder="Your Full Name" required aria-label="Register Full Name">
+                                <div class="invalid-feedback">Please enter your full name.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                                <input type="email" class="form-control" id="registerEmail" placeholder="your@example.com" required aria-label="Register Email">
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" id="registerPassword" placeholder="Create Password" required aria-label="Register Password">
+                                <span class="input-group-text password-toggle" data-target="registerPassword"><i class="bi bi-eye-slash-fill"></i></span>
+                                <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required aria-label="Confirm Password">
+                                <span class="input-group-text password-toggle" data-target="confirmPassword"><i class="bi bi-eye-slash-fill"></i></span>
+                                <div class="invalid-feedback" id="confirmPasswordFeedback">Passwords do not match.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPhone" class="form-label">Phone Number (Optional)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                <input type="tel" class="form-control" id="registerPhone" placeholder="+91 12345 67890" aria-label="Register Phone Number">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </form>
+                    <p class="form-text-link">Already have an account? <a href="#" class="link-secondary" data-bs-toggle="pill" data-bs-target="#pills-login" id="switch-to-login">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container">
+        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Success! You are now logged in.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="registerSuccessToast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Account created successfully! Please log in.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Error: Please check your input.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password visibility toggle
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const passwordInput = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('bi-eye-slash-fill');
+                        icon.classList.add('bi-eye-fill');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('bi-eye-fill');
+                        icon.classList.add('bi-eye-slash-fill');
+                    }
+                });
+            });
+
+            // Form Validation and Submission (Mock)
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+            const registerSuccessToast = new bootstrap.Toast(document.getElementById('registerSuccessToast'));
+            const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+
+            // Login Form Submission
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                event.stopPropagation(); // Stop event bubbling
+
+                if (loginForm.checkValidity()) {
+                    // Simulate login success
+                    successToast.show();
+                    loginForm.reset();
+                    loginForm.classList.remove('was-validated');
+                } else {
+                    errorToast.show();
+                }
+                loginForm.classList.add('was-validated'); // Show validation feedback
+            });
+
+            // Register Form Submission
+            registerForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                event.stopPropagation(); // Stop event bubbling
+
+                const password = document.getElementById('registerPassword');
+                const confirmPassword = document.getElementById('confirmPassword');
+                const confirmPasswordFeedback = document.getElementById('confirmPasswordFeedback');
+
+                let formIsValid = registerForm.checkValidity();
+
+                // Custom validation for password match
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity("Passwords do not match.");
+                    confirmPasswordFeedback.textContent = "Passwords do not match.";
+                    formIsValid = false;
+                } else {
+                    confirmPassword.setCustomValidity(""); // Clear custom validity
+                }
+
+                if (password.value.length < 6) {
+                    password.setCustomValidity("Password must be at least 6 characters.");
+                } else {
+                    password.setCustomValidity("");
+                }
+
+
+                if (formIsValid) {
+                    // Simulate registration success
+                    registerSuccessToast.show();
+                    registerForm.reset();
+                    registerForm.classList.remove('was-validated');
+                    // Optionally switch to login tab after successful registration
+                    const loginTab = new bootstrap.Tab(document.getElementById('pills-login-tab'));
+                    loginTab.show();
+                } else {
+                    errorToast.show();
+                }
+                registerForm.classList.add('was-validated'); // Show validation feedback
+            });
+
+            // Clear validation on tab switch (optional, for cleaner feel)
+            const pillsTab = document.getElementById('pills-tab');
+            pillsTab.addEventListener('hide.bs.tab', function (event) {
+                if (event.target.id === 'pills-login-tab') {
+                    loginForm.classList.remove('was-validated');
+                    loginForm.reset();
+                } else if (event.target.id === 'pills-register-tab') {
+                    registerForm.classList.remove('was-validated');
+                    registerForm.reset();
+                }
+            });
+
+            // Smoothly switch tabs from "Don't have an account?" or "Already have an account?" links
+            document.getElementById('switch-to-register').addEventListener('click', function(e) {
+                e.preventDefault();
+                const registerTab = new bootstrap.Tab(document.getElementById('pills-register-tab'));
+                registerTab.show();
+            });
+
+            document.getElementById('switch-to-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                const loginTab = new bootstrap.Tab(document.getElementById('pills-login-tab'));
+                loginTab.show();
+            });
+        });
+    </script>
+</body>
+</html>

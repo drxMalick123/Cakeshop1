@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetBites Bakery - Contact Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffcce6;
+            --secondary-pink: #ff99cc;
+            --dark-pink: #ff66b3;
+            --cream: #fff5e6;
+            --chocolate: #663300;
+            --lavender: #e6ccff;
+            --mint: #ccffdd;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+            background-color: #f8f9fa;
+        }
+
+        .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            padding: 15px 0;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: var(--dark-pink) !important;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            margin: 0 8px;
+            color: #555 !important;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--dark-pink) !important;
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-left: 15px;
+            color: #555;
+            transition: all 0.3s;
+        }
+
+        .nav-icon:hover {
+            color: var(--dark-pink);
+            transform: scale(1.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--dark-pink);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+                     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+     background-size: cover;
+            background-position: center;
+            height: 50vh; /* Shorter for contact page */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-top: 76px; /* Adjust for fixed navbar height */
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Dancing Script', cursive;
+            color: var(--dark-pink);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background-color: var(--secondary-pink);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        /* Contact Form Section */
+        .contact-form-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 20px;
+            border: 1px solid var(--primary-pink);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--dark-pink);
+            box-shadow: 0 0 0 0.25rem rgba(255, 102, 179, 0.25); /* Darker pink shadow */
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background-color: var(--dark-pink);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff3399;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Location Section */
+        .location-section {
+            padding: 80px 0;
+            background-color: var(--cream);
+        }
+
+        .map-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            height: 400px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .contact-details-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .contact-details-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-details-card .icon {
+            font-size: 2rem;
+            color: var(--dark-pink);
+            margin-bottom: 15px;
+        }
+
+        .contact-details-card h5 {
+            font-weight: 600;
+            color: var(--chocolate);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--chocolate);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .footer h4 {
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background-color: var(--secondary-pink);
+            bottom: -10px;
+            left: 0;
+            border-radius: 3px;
+        }
+        
+        .footer .col-lg-4.col-md-6:nth-child(1) h4::after {
+            left: 0; /* Align with text for first column */
+        }
+        .footer .col-lg-2.col-md-6 h4::after {
+            left: 0; /* Align with text for first column */
+        }
+        .footer .col-lg-4.col-md-6:nth-child(4) h4::after {
+            left: 0; /* Align with text for first column */
+        }
+
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            opacity: 0.8;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary-pink);
+            padding-left: 5px;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s;
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background-color: var(--dark-pink);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            opacity: 0.7;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .navbar-collapse {
+                text-align: center;
+            }
+            .navbar-nav {
+                align-items: center;
+            }
+            .nav-icon {
+                margin: 0 8px;
+            }
+            .footer h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: 40vh;
+                margin-top: 66px; /* Adjust for fixed navbar height */
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .footer {
+                text-align: center;
+            }
+            .footer-links {
+                text-align: center;
+                list-style: none;
+                padding: 0;
+            }
+            .footer-links li {
+                text-align: center;
+            }
+            .footer-links a {
+                display: inline-block; /* Center links */
+            }
+            .social-icons {
+                justify-content: center;
+                display: flex;
+            }
+            .contact-details-card {
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            .map-container {
+                height: 300px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Toast styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand cursive" href="index.html">SweetBites</a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Cakes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex">
+                    <a href="#" class="nav-icon"><i class="bi bi-search"></i></a>
+                    <a href="#" class="nav-icon"><i class="bi bi-heart"></i></a>
+                    <a href="#" class="nav-icon"><i class="bi bi-person"></i></a>
+                    <a href="#" class="nav-icon position-relative">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero d-flex align-items-center justify-content-center">
+        <div class="container text-center fade-in">
+            <h1 class="cursive">We'd love to hear from you!</h1>
+            <p>Get in touch for orders, queries, or just to say hi 🍰</p>
+        </div>
+    </section>
+
+    <section class="contact-form-section">
+        <div class="container">
+            <h2 class="text-center section-title fade-in">Send Us a Message</h2>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8 fade-in delay-1">
+                    <form id="contactForm" class="p-4 p-md-5 bg-white rounded-3 shadow-sm">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" placeholder="Your Full Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="+91 12345 67890">
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" placeholder="Order Inquiry, Custom Cake, Feedback, etc." required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="Tell us more..." required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="location-section">
+        <div class="container">
+            <h2 class="text-center section-title fade-in">Find Us Here</h2>
+
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-7 fade-in delay-1">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.5029871131115!2d77.21666671497217!3d28.614138882424036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd2b1f0f3e69%3A0xcf4b1e5f8a0a0b2!2sConnaught%20Place%2C%20New%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1678280654321!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="SweetBites Bakery Location"></iframe>
+                    </div>
+                </div>
+                <div class="col-lg-5 fade-in delay-2">
+                    <div class="d-flex flex-column h-100">
+                        <div class="contact-details-card mb-3">
+                            <div class="icon"><i class="bi bi-geo-alt"></i></div>
+                            <h5>Our Address</h5>
+                            <p class="mb-0">123 Sweet Street, Connaught Place, New Delhi, India</p>
+                        </div>
+                        <div class="contact-details-card mb-3">
+                            <div class="icon"><i class="bi bi-telephone"></i></div>
+                            <h5>Call Us</h5>
+                            <p class="mb-0">+91 12345 67890</p>
+                        </div>
+                        <div class="contact-details-card mb-3">
+                            <div class="icon"><i class="bi bi-envelope"></i></div>
+                            <h5>Email Us</h5>
+                            <p class="mb-0">hello@sweetbites.com</p>
+                        </div>
+                        <div class="contact-details-card">
+                            <div class="icon"><i class="bi bi-clock"></i></div>
+                            <h5>Working Hours</h5>
+                            <p class="mb-0">Mon - Sat: 9:00 AM - 7:00 PM</p>
+                            <p class="mb-0">Sun: 10:00 AM - 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 fade-in">
+                    <h3 class="footer-logo cursive">SweetBites</h3>
+                    <p>We create handcrafted cakes and desserts to make your special moments even sweeter. Quality ingredients, beautiful designs, and unforgettable flavors.</p>
+                    <div class="social-icons d-flex">
+                        <a href="https://www.facebook.com" target="_blank" class="social-icon" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com" target="_blank" class="social-icon" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.twitter.com" target="_blank" class="social-icon" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="https://www.pinterest.com" target="_blank" class="social-icon" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0 fade-in delay-1">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Cakes</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0 fade-in delay-2">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Birthday Cakes</a></li>
+                        <li><a href="#">Wedding Cakes</a></li>
+                        <li><a href="#">Cupcakes</a></li>
+                        <li><a href="#">Eggless Cakes</a></li>
+                        <li><a href="#">Seasonal Specials</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-6 fade-in delay-3">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li><i class="bi bi-geo-alt me-2"></i> 123 Sweet Street, Dessert City</li>
+                        <li><i class="bi bi-telephone me-2"></i> (123) 456-7890</li>
+                        <li><i class="bi bi-envelope me-2"></i> hello@sweetbites.com</li>
+                        <li><i class="bi bi-clock me-2"></i> Mon-Sat: 9AM - 7PM</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center copyright fade-in">
+                <p>&copy; <span id="currentYear"></span> SweetBites Bakery. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast-container">
+        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Message sent successfully! We'll get back to you soon.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Sticky navbar on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Dynamic copyright year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Handle form submission (mock JS for toast)
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission
+
+            // Basic validation check (Bootstrap's built-in validation should handle most)
+            if (this.checkValidity()) {
+                const toastLiveExample = document.getElementById('successToast');
+                const toast = new bootstrap.Toast(toastLiveExample);
+                toast.show();
+
+                // Clear the form fields after successful submission
+                this.reset();
+            } else {
+                // If validation fails, Bootstrap will show its native validation messages
+                this.classList.add('was-validated');
+            }
+        });
+    </script>
+</body>
+</html>

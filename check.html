@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetBites Bakery - Cart & Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffcce6;
+            --secondary-pink: #ff99cc;
+            --dark-pink: #ff66b3;
+            --cream: #fff5e6;
+            --chocolate: #663300;
+            --lavender: #e6ccff;
+            --mint: #ccffdd;
+            --light-yellow: #fffacd; /* Added for dessert theme */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+            background-color: var(--cream);
+        }
+
+        .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            padding: 15px 0;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: var(--dark-pink) !important;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            margin: 0 8px;
+            color: #555 !important;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--dark-pink) !important;
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-left: 15px;
+            color: #555;
+            transition: all 0.3s;
+        }
+
+        .nav-icon:hover {
+            color: var(--dark-pink);
+            transform: scale(1.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--dark-pink);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Dancing Script', cursive;
+            color: var(--dark-pink);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            font-size: 2.5rem;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background-color: var(--secondary-pink);
+            bottom: -10px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--dark-pink);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff3399;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-primary {
+            color: var(--dark-pink);
+            border-color: var(--dark-pink);
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--dark-pink);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Cart Section */
+        .cart-section {
+            padding: 100px 0 50px;
+            background-color: var(--light-yellow);
+        }
+
+        .cart-item-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 15px;
+        }
+
+        .cart-item-details h5 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-details p {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-control button {
+            background-color: var(--primary-pink);
+            border: 1px solid var(--secondary-pink);
+            color: var(--chocolate);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .quantity-control button:hover {
+            background-color: var(--dark-pink);
+            color: white;
+        }
+
+        .quantity-control input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0 5px;
+            -moz-appearance: textfield; /* Firefox */
+        }
+
+        .quantity-control input::-webkit-outer-spin-button,
+        .quantity-control input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+
+        .item-price {
+            font-weight: 700;
+            color: var(--dark-pink);
+            font-size: 1.1rem;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .remove-item-btn:hover {
+            color: #c82333;
+            transform: scale(1.1);
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+
+        .cart-summary h4 {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark-pink);
+        }
+
+        .cart-summary .d-flex {
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .cart-summary .total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--chocolate);
+            border-top: 1px dashed #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        /* Checkout Section */
+        .checkout-section {
+            padding: 50px 0 80px;
+        }
+
+        .checkout-form, .order-summary-checkout {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            height: 100%; /* Ensure both columns are same height */
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border-color: #eee;
+            padding: 10px 15px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(255, 153, 204, 0.25); /* secondary-pink with alpha */
+            border-color: var(--secondary-pink);
+        }
+
+        .order-summary-checkout ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .order-summary-checkout ul li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .order-summary-checkout ul li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .order-summary-checkout .item-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .order-summary-checkout .item-details img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+
+        .order-summary-checkout .item-total {
+            font-weight: 600;
+            color: var(--dark-pink);
+        }
+
+        .order-summary-checkout .summary-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .order-summary-checkout .summary-line.total {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--chocolate);
+            border-top: 2px solid var(--dark-pink);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        /* Modal */
+        .modal-content {
+            border-radius: 15px;
+            background-color: var(--mint);
+            padding: 20px;
+        }
+
+        .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .modal-title {
+            color: var(--dark-pink);
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--chocolate);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .footer h4 {
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer h4:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background-color: var(--secondary-pink);
+            bottom: -10px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            opacity: 0.8;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary-pink);
+            padding-left: 5px;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background-color: var(--dark-pink);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            opacity: 0.7;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .cart-item-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .cart-item-img {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .quantity-control {
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .cart-item-price-remove {
+                margin-top: 15px;
+            }
+            .footer {
+                text-align: center;
+            }
+            .footer h4:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .btn-primary, .btn-outline-primary {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand cursive" href="index.html">SweetBites</a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Cakes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex">
+                    <a href="#" class="nav-icon"><i class="bi bi-search"></i></a>
+                    <a href="#" class="nav-icon"><i class="bi bi-heart"></i></a>
+                    <a href="#" class="nav-icon"><i class="bi bi-person"></i></a>
+                    <a href="cart-checkout.html" class="nav-icon position-relative">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-count" id="cart-item-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="cart-section">
+        <div class="container">
+            <h2 class="text-center section-title mx-auto">Your Cart</h2>
+            
+            <div class="row" id="cart-items-container">
+                <div class="col-12">
+                    <div class="cart-item-card d-md-flex align-items-md-center">
+                        <img src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" class="cart-item-img" alt="Chocolate Fudge Cake">
+                        <div class="flex-grow-1 cart-item-details text-md-start text-center">
+                            <h5>Chocolate Fudge Cake</h5>
+                            <p>Variant: Eggless, 1 Kg</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center my-2 my-md-0 mx-md-3">
+                            <div class="quantity-control">
+                                <button class="btn btn-sm decrease-quantity" data-price="29.99">-</button>
+                                <input type="number" class="form-control form-control-sm text-center quantity-input" value="1" min="1">
+                                <button class="btn btn-sm increase-quantity" data-price="29.99">+</button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center cart-item-price-remove">
+                            <span class="item-price me-3">$29.99</span>
+                            <button class="remove-item-btn"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="cart-item-card d-md-flex align-items-md-center">
+                        <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" class="cart-item-img" alt="Vanilla Dream Cake">
+                        <div class="flex-grow-1 cart-item-details text-md-start text-center">
+                            <h5>Vanilla Dream Cake</h5>
+                            <p>Variant: With Egg, 0.5 Kg</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center my-2 my-md-0 mx-md-3">
+                            <div class="quantity-control">
+                                <button class="btn btn-sm decrease-quantity" data-price="24.99">-</button>
+                                <input type="number" class="form-control form-control-sm text-center quantity-input" value="1" min="1">
+                                <button class="btn btn-sm increase-quantity" data-price="24.99">+</button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center cart-item-price-remove">
+                            <span class="item-price me-3">$24.99</span>
+                            <button class="remove-item-btn"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="cart-item-card d-md-flex align-items-md-center">
+                        <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" class="cart-item-img" alt="Red Velvet Cupcakes">
+                        <div class="flex-grow-1 cart-item-details text-md-start text-center">
+                            <h5>Red Velvet Cupcakes</h5>
+                            <p>Variant: Set of 6</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center my-2 my-md-0 mx-md-3">
+                            <div class="quantity-control">
+                                <button class="btn btn-sm decrease-quantity" data-price="18.50">-</button>
+                                <input type="number" class="form-control form-control-sm text-center quantity-input" value="1" min="1">
+                                <button class="btn btn-sm increase-quantity" data-price="18.50">+</button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center cart-item-price-remove">
+                            <span class="item-price me-3">$18.50</span>
+                            <button class="remove-item-btn"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-end mt-4">
+                <div class="col-lg-5 col-md-7 col-sm-10">
+                    <div class="cart-summary">
+                        <h4 class="text-center">Cart Totals</h4>
+                        <div class="d-flex">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-amount">$0.00</span>
+                        </div>
+                        <div class="d-flex">
+                            <span>Taxes (5%):</span>
+                            <span id="taxes-amount">$0.00</span>
+                        </div>
+                        <div class="d-flex total">
+                            <span>Grand Total:</span>
+                            <span id="grandtotal-amount">$0.00</span>
+                        </div>
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="#" class="btn btn-outline-primary">Continue Shopping</a>
+                            <button class="btn btn-primary" onclick="scrollToCheckout()">Proceed to Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="checkout-section" id="checkout-section">
+        <div class="container">
+            <h2 class="text-center section-title mx-auto">Checkout</h2>
+            
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="checkout-form">
+                        <h4 class="mb-4 text-center text-md-start" style="color: var(--dark-pink);">Shipping Information</h4>
+                        <form>
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" placeholder="John Doe" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phoneNumber" placeholder="+1 (123) 456-7890" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="emailAddress" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="emailAddress" placeholder="john.doe@example.com" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addressLine1" class="form-label">Address Line 1</label>
+                                <input type="text" class="form-control" id="addressLine1" placeholder="123 Bakery Lane" required>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="city" placeholder="Dessert City" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="state" class="form-label">State</label>
+                                    <input type="text" class="form-control" id="state" placeholder="CA" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="pincode" class="form-label">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" placeholder="90210" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deliveryInstructions" class="form-label">Delivery Instructions (Optional)</label>
+                                <textarea class="form-control" id="deliveryInstructions" rows="3" placeholder="Leave at the front door, ring doorbell once"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="order-summary-checkout">
+                        <h4 class="mb-4 text-center text-md-start" style="color: var(--dark-pink);">Order Summary</h4>
+                        <ul id="checkout-item-list">
+                            </ul>
+                        <div class="summary-line">
+                            <span>Subtotal:</span>
+                            <span id="checkout-subtotal">$0.00</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Discount:</span>
+                            <span>-$0.00</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Delivery Charges:</span>
+                            <span>$5.00</span>
+                        </div>
+                        <div class="summary-line total">
+                            <span>Grand Total:</span>
+                            <span id="checkout-grandtotal">$0.00</span>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderSuccessModal">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-labelledby="orderSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title cursive" id="orderSuccessModalLabel">Order Placed!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                    <p class="mt-3 fs-5">Thank you for your order!</p>
+                    <p>Your order number is: <strong id="order-number">SB-20250729-12345</strong></p>
+                    <p>Expected delivery: <strong id="delivery-date">July 31, 2025</strong></p>
+                    <p>We've sent a confirmation email to your provided address.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <h3 class="footer-logo cursive">SweetBites</h3>
+                    <p>We create handcrafted cakes and desserts to make your special moments even sweeter. Quality ingredients, beautiful designs, and unforgettable flavors.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-pinterest"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Cakes</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Birthday Cakes</a></li>
+                        <li><a href="#">Wedding Cakes</a></li>
+                        <li><a href="#">Cupcakes</a></li>
+                        <li><a href="#">Eggless Cakes</a></li>
+                        <li><a href="#">Seasonal Specials</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li><i class="bi bi-geo-alt me-2"></i> 123 Sweet Street, Dessert City</li>
+                        <li><i class="bi bi-telephone me-2"></i> (123) 456-7890</li>
+                        <li><i class="bi bi-envelope me-2"></i> hello@sweetbites.com</li>
+                        <li><i class="bi bi-clock me-2"></i> Mon-Sat: 9AM - 7PM</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="text-center copyright">
+                <p>&copy; 2023 SweetBites Bakery. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Sticky navbar on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Function to update cart totals
+        function updateCartTotals() {
+            let subtotal = 0;
+            const cartItems = document.querySelectorAll('.cart-item-card');
+
+            cartItems.forEach(item => {
+                const quantityInput = item.querySelector('.quantity-input');
+                const itemPriceElement = item.querySelector('.item-price');
+                const price = parseFloat(itemPriceElement.dataset.originalPrice); // Use data-original-price
+                const quantity = parseInt(quantityInput.value);
+                subtotal += price * quantity;
+            });
+
+            const taxes = subtotal * 0.05; // 5% tax
+            const grandTotal = subtotal + taxes + 5.00; // Assuming $5 delivery charge
+
+            document.getElementById('subtotal-amount').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('taxes-amount').textContent = `$${taxes.toFixed(2)}`;
+            document.getElementById('grandtotal-amount').textContent = `$${grandTotal.toFixed(2)}`;
+
+            // Update checkout summary
+            updateCheckoutSummary();
+        }
+
+        // Function to update checkout summary
+        function updateCheckoutSummary() {
+            const checkoutItemList = document.getElementById('checkout-item-list');
+            checkoutItemList.innerHTML = ''; // Clear existing items
+
+            let checkoutSubtotal = 0;
+            const cartItems = document.querySelectorAll('.cart-item-card');
+
+            cartItems.forEach(item => {
+                const img = item.querySelector('.cart-item-img').src;
+                const name = item.querySelector('h5').textContent;
+                const quantity = parseInt(item.querySelector('.quantity-input').value);
+                const price = parseFloat(item.querySelector('.item-price').dataset.originalPrice);
+                const itemTotal = price * quantity;
+
+                checkoutSubtotal += itemTotal;
+
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <div class="item-details">
+                        <img src="${img}" alt="${name}">
+                        <span>${name} (x${quantity})</span>
+                    </div>
+                    <span class="item-total">$${itemTotal.toFixed(2)}</span>
+                `;
+                checkoutItemList.appendChild(listItem);
+            });
+
+            const checkoutTaxes = checkoutSubtotal * 0.05;
+            const checkoutGrandTotal = checkoutSubtotal + checkoutTaxes + 5.00; // Same delivery charge
+
+            document.getElementById('checkout-subtotal').textContent = `$${checkoutSubtotal.toFixed(2)}`;
+            document.getElementById('checkout-grandtotal').textContent = `$${checkoutGrandTotal.toFixed(2)}`;
+        }
+
+        // Event listeners for quantity controls and remove buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartItemsContainer = document.getElementById('cart-items-container');
+
+            // Initialize original prices (store them on elements)
+            document.querySelectorAll('.cart-item-card').forEach(item => {
+                const itemPriceElement = item.querySelector('.item-price');
+                itemPriceElement.dataset.originalPrice = itemPriceElement.textContent.replace('$', '');
+            });
+
+            cartItemsContainer.addEventListener('click', function(event) {
+                // Increase quantity
+                if (event.target.classList.contains('increase-quantity')) {
+                    const quantityInput = event.target.previousElementSibling;
+                    let quantity = parseInt(quantityInput.value);
+                    quantityInput.value = quantity + 1;
+                    const pricePerItem = parseFloat(event.target.dataset.price);
+                    event.target.closest('.cart-item-card').querySelector('.item-price').textContent = `$${(pricePerItem * (quantity + 1)).toFixed(2)}`;
+                    updateCartTotals();
+                }
+                // Decrease quantity
+                else if (event.target.classList.contains('decrease-quantity')) {
+                    const quantityInput = event.target.nextElementSibling;
+                    let quantity = parseInt(quantityInput.value);
+                    if (quantity > 1) {
+                        quantityInput.value = quantity - 1;
+                        const pricePerItem = parseFloat(event.target.dataset.price);
+                        event.target.closest('.cart-item-card').querySelector('.item-price').textContent = `$${(pricePerItem * (quantity - 1)).toFixed(2)}`;
+                        updateCartTotals();
+                    }
+                }
+                // Remove item
+                else if (event.target.classList.contains('remove-item-btn') || event.target.closest('.remove-item-btn')) {
+                    const itemToRemove = event.target.closest('.cart-item-card');
+                    itemToRemove.remove();
+                    // Update cart item count in navbar
+                    const currentCount = parseInt(document.getElementById('cart-item-count').textContent);
+                    document.getElementById('cart-item-count').textContent = currentCount - 1;
+                    updateCartTotals();
+                }
+            });
+
+            cartItemsContainer.addEventListener('change', function(event) {
+                if (event.target.classList.contains('quantity-input')) {
+                    let quantity = parseInt(event.target.value);
+                    if (isNaN(quantity) || quantity < 1) {
+                        event.target.value = 1; // Reset to 1 if invalid
+                    }
+                    const pricePerItem = parseFloat(event.target.closest('.cart-item-card').querySelector('.item-price').dataset.originalPrice);
+                    event.target.closest('.cart-item-card').querySelector('.item-price').textContent = `$${(pricePerItem * parseInt(event.target.value)).toFixed(2)}`;
+                    updateCartTotals();
+                }
+            });
+
+            updateCartTotals(); // Initial calculation on page load
+        });
+
+        // Scroll to checkout section
+        function scrollToCheckout() {
+            document.getElementById('checkout-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Populate order number and delivery date in modal
+        const orderSuccessModal = document.getElementById('orderSuccessModal');
+        orderSuccessModal.addEventListener('show.bs.modal', event => {
+            const orderNumberElement = document.getElementById('order-number');
+            const deliveryDateElement = document.getElementById('delivery-date');
+
+            // Generate a simple order number
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const randomNum = Math.floor(Math.random() * 90000) + 10000; // 5-digit random number
+            orderNumberElement.textContent = `SB-${year}${month}${day}-${randomNum}`;
+
+            // Calculate expected delivery date (e.g., 2 days from now)
+            const deliveryDate = new Date();
+            deliveryDate.setDate(date.getDate() + 2);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            deliveryDateElement.textContent = deliveryDate.toLocaleDateString('en-US', options);
+        });
+    </script>
+</body>
+</html>
